@@ -1,4 +1,7 @@
-/* global wpColorPickerL10n */
+/**
+ * @output wp-admin/js/color-picker.js
+ */
+
 ( function( $, undef ) {
 
 	var ColorPicker,
@@ -7,7 +10,8 @@
 		_wrap = '<div class="wp-picker-container" />',
 		_button = '<input type="button" class="button button-small" />',
 		_wrappingLabel = '<label></label>',
-		_wrappingLabelText = '<span class="screen-reader-text"></span>';
+		_wrappingLabelText = '<span class="screen-reader-text"></span>',
+		__ = wp.i18n.__;
 
 	/**
 	 * Creates a jQuery UI color picker that is used in the theme customizer.
@@ -32,10 +36,9 @@
 		 * Creates a color picker that only allows you to adjust the hue.
 		 *
 		 * @since 3.5.0
-		 *
 		 * @access private
 		 *
-		 * @returns {void}
+		 * @return {void}
 		 */
 		_createHueOnly: function() {
 			var self = this,
@@ -61,7 +64,7 @@
 				 * @param {Event} event    The event that's being called.
 				 * @param {HTMLElement} ui The HTMLElement containing the color picker.
 				 *
-				 * @returns {void}
+				 * @return {void}
 				 */
 				change: function( event, ui ) {
 					if ( $.isFunction( self.options.change ) ) {
@@ -76,10 +79,9 @@
 		 * Creates the color picker, sets default values, css classes and wraps it all in HTML.
 		 *
 		 * @since 3.5.0
-		 *
 		 * @access private
 		 *
-		 * @returns {void}
+		 * @return {void}
 		 */
 		_create: function() {
 			// Return early if Iris support is missing.
@@ -116,7 +118,7 @@
 				// Insert the default label text.
 				self.wrappingLabelText = $( _wrappingLabelText )
 					.insertBefore( el )
-					.text( wpColorPickerL10n.defaultLabel );
+					.text( __( 'Color value' ) );
 			}
 
 			/*
@@ -134,7 +136,7 @@
 				.insertBefore( self.wrappingLabel )
 				.css( { backgroundColor: self.initialValue } );
 			// Set the toggle button span element text.
-			self.toggler.find( '.wp-color-result-text' ).text( wpColorPickerL10n.pick );
+			self.toggler.find( '.wp-color-result-text' ).text( __( 'Select Color' ) );
 			// Set up the Iris container and insert it after the wrapping label.
 			self.pickerContainer = $( _after ).insertAfter( self.wrappingLabel );
 			// Store a reference to the Clear/Default button.
@@ -144,13 +146,13 @@
 			if ( self.options.defaultColor ) {
 				self.button
 					.addClass( 'wp-picker-default' )
-					.val( wpColorPickerL10n.defaultString )
-					.attr( 'aria-label', wpColorPickerL10n.defaultAriaLabel );
+					.val( __( 'Default' ) )
+					.attr( 'aria-label', __( 'Select default color' ) );
 			} else {
 				self.button
 					.addClass( 'wp-picker-clear' )
-					.val( wpColorPickerL10n.clear )
-					.attr( 'aria-label', wpColorPickerL10n.clearAriaLabel );
+					.val( __( 'Clear' ) )
+					.attr( 'aria-label', __( 'Clear color' ) );
 			}
 
 			// Wrap the wrapping label in its wrapper and append the Clear/Default button.
@@ -182,7 +184,7 @@
 				 * @param {Event} event    The event that's being called.
 				 * @param {HTMLElement} ui The HTMLElement containing the color picker.
 				 *
-				 * @returns {void}
+				 * @return {void}
 				 */
 				change: function( event, ui ) {
 					self.toggler.css( { backgroundColor: ui.color.toString() } );
@@ -205,10 +207,9 @@
 		 * Binds event listeners to the color picker.
 		 *
 		 * @since 3.5.0
-		 *
 		 * @access private
 		 *
-		 * @returns {void}
+		 * @return {void}
 		 */
 		_addListeners: function() {
 			var self = this;
@@ -220,7 +221,7 @@
 			 *
 			 * @param {Event} event The event that's being called.
 			 *
-			 * @returs {void}
+			 * @return {void}
 			 */
 			self.wrap.on( 'click.wpcolorpicker', function( event ) {
 				event.stopPropagation();
@@ -229,7 +230,7 @@
 			/**
 			 * Open or close the color picker depending on the class.
 			 *
-			 * @since 3.5
+			 * @since 3.5.0
 			 */
 			self.toggler.click( function(){
 				if ( self.toggler.hasClass( 'wp-picker-open' ) ) {
@@ -247,7 +248,7 @@
 			 *
 			 * @param {Event} event The event that's being called.
 			 *
-			 * @returns {void}
+			 * @return {void}
 			 */
 			self.element.change( function( event ) {
 				var me = $( this ),
@@ -269,7 +270,7 @@
 			 *
 			 * @param {Event} event The event that's being called.
 			 *
-			 * @returns {void}
+			 * @return {void}
 			 */
 			self.button.click( function( event ) {
 				var me = $( this );
@@ -289,7 +290,7 @@
 		 *
 		 * @since 3.5.0
 		 *
-		 * @returns {void}
+		 * @return {void}
 		 */
 		open: function() {
 			this.element.iris( 'toggle' );
@@ -305,7 +306,7 @@
 		 *
 		 * @since 3.5.0
 		 *
-		 * @returns {void}
+		 * @return {void}
 		 */
 		close: function() {
 			this.element.iris( 'toggle' );
@@ -323,7 +324,7 @@
 		 *
 		 * @since 3.5.0
 		 *
-		 * @returns {string} The element's color
+		 * @return {string} The element's color.
 		 */
 		color: function( newColor ) {
 			if ( newColor === undef ) {
@@ -339,7 +340,7 @@
 		 *
 		 * @since 3.5.0
 		 *
-		 * @returns {boolean|string} The element's color.
+		 * @return {boolean|string} The element's color.
 		 */
 		defaultColor: function( newDefaultColor ) {
 			if ( newDefaultColor === undef ) {
